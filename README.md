@@ -24,4 +24,12 @@ On Linux:
 
 ## 3. Log directory
 
-Main log file is located in ./logs/spring-boot-logger.log
+Main log file is located in `./logs/spring-boot-logger.log`
+
+## 4. Default embedded database directory
+
+Default embedded H2 Database is located in `./.database` directory.
+
+Default _username_: `app`
+
+Default _password_: `app123`
