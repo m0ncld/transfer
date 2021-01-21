@@ -21,3 +21,7 @@ On Windows:
 
 On Linux:
 `.gradkew clean bootRun`
+
+## 3. Log directory
+
+Main log file is located in ./logs/spring-boot-logger.log
