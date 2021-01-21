@@ -6,6 +6,8 @@ plugins {
 
 apply plugin: 'java'
 apply plugin: 'io.spring.dependency-management'
+apply plugin: 'checkstyle'
+apply plugin: 'pmd'
 
 group 'com.challenge'
 version '1.0-SNAPSHOT'
@@ -32,4 +34,8 @@ dependencies {
 
 test {
     useJUnitPlatform()
+}
+
+checkstyle {
+    toolVersion = '8.32'
 }
