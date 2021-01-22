@@ -1,9 +1,7 @@
 package com.challenge.transfer.account;
 
-import com.challenge.transfer.dto.AccountDto;
 import com.challenge.transfer.util.Currency;
 
-import java.util.Map;
 import java.util.Optional;
 
 public interface AccountRepository {
@@ -79,7 +77,7 @@ public interface AccountRepository {
      * or one of its items is {@literal null}.
      */
     Iterable<AccountDto> findAllById(
-            Iterable<Map.Entry<Integer, Currency>> ids);
+            Iterable<AccountId> ids);
 
     /**
      * Returns the number of entities available.

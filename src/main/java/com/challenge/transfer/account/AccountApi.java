@@ -1,6 +1,5 @@
 package com.challenge.transfer.account;
 
-import com.challenge.transfer.dto.AccountDto;
 import com.challenge.transfer.util.Currency;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;

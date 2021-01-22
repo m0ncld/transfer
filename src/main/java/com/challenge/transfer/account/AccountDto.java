@@ -1,4 +1,4 @@
-package com.challenge.transfer.dto;
+package com.challenge.transfer.account;
 
 import com.challenge.transfer.util.Currency;
 
@@ -8,11 +8,12 @@ import java.math.BigDecimal;
 import java.util.Objects;
 
 public class AccountDto implements Serializable {
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 2L;
 
     /**
      * Owner ID.
      */
+    @NotNull
     private final Integer ownerId;
 
     /**
