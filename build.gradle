@@ -39,4 +39,9 @@ test {
 
 checkstyle {
     toolVersion = '8.32'
+    checkstyleTest.enabled = false
+}
+
+pmd {
+    sourceSets = [sourceSets.main]
 }
