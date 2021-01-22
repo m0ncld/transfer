@@ -1,0 +1,131 @@
+{
+  "databaseChangeLog": [
+    {
+      "changeSet": {
+        "id": "1.0.0/0",
+        "author": "llusczek",
+        "changes": [
+          {
+            "createTable": {
+              "tableName": "account",
+              "columns": [
+                {
+                  "column": {
+                    "name": "owner_id",
+                    "type": "int",
+                    "constraints": {
+                      "primaryKey": true,
+                      "nullable": false
+                    }
+                  }
+                },
+                {
+                  "column": {
+                    "name": "currency",
+                    "type": "varchar(3)",
+                    "constraints": {
+                      "primaryKey": true,
+                      "nullable": false
+                    }
+                  }
+                },
+                {
+                  "column": {
+                    "name": "balance",
+                    "type": "int",
+                    "constraints": {
+                      "nullable": false
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "changeSet": {
+        "id": "1.0.0/1",
+        "author": "lluszczek",
+        "changes": [
+          {
+            "insert": {
+              "columns": [
+                {
+                  "column":  {
+                    "name":  "owner_id",
+                    "value":  0
+                  }
+                },
+                {
+                  "column":  {
+                    "name":  "currency",
+                    "value":  "EUR"
+                  }
+                },
+                {
+                  "column":  {
+                    "name":  "balance",
+                    "value":  "6000000"
+                  }
+                }
+              ],
+              "tableName":  "account"
+            }
+          },
+          {
+            "insert": {
+              "columns": [
+                {
+                  "column":  {
+                    "name":  "owner_id",
+                    "value":  1
+                  }
+                },
+                {
+                  "column":  {
+                    "name":  "currency",
+                    "value":  "USD"
+                  }
+                },
+                {
+                  "column":  {
+                    "name":  "balance",
+                    "value":  "7000000"
+                  }
+                }
+              ],
+              "tableName":  "account"
+            }
+          },
+          {
+            "insert": {
+              "columns": [
+                {
+                  "column":  {
+                    "name":  "owner_id",
+                    "value":  2
+                  }
+                },
+                {
+                  "column":  {
+                    "name":  "currency",
+                    "value":  "PLN"
+                  }
+                },
+                {
+                  "column":  {
+                    "name":  "balance",
+                    "value":  "8000000"
+                  }
+                }
+              ],
+              "tableName":  "account"
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

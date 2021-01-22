@@ -6,10 +6,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 /**
  * Main Spring Application class.
  */
+//CHECKSTYLE.OFF: HideUtilityClassConstructor - This is not Utility class
 @SpringBootApplication
 public class Application {
-
-    private Application() { }
 
     /**
      * Main system method.
@@ -21,3 +20,4 @@ public class Application {
     }
 
 }
+//CHECKSTYLE.ON: HideUtilityClassConstructor - Simple dictionary
