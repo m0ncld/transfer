@@ -1,6 +1,6 @@
 package com.challenge.transfer.account.jpa;
 
-import com.challenge.transfer.dto.AccountDto;
+import com.challenge.transfer.account.AccountDto;
 import com.challenge.transfer.util.ConversionException;
 import com.challenge.transfer.util.Convertable;
 import com.challenge.transfer.util.Currency;
@@ -12,14 +12,18 @@ import java.math.BigDecimal;
 class AccountConverter implements Convertable<AccountDto, AccountEntity> {
 
     @Override
-    public AccountEntity convertFrom(AccountDto from) {
+    public AccountEntity convertFrom(AccountDto from) throws ConversionException {
         AccountEntity entity = new AccountEntity();
         AccountEntityPK pk = new AccountEntityPK(from.getOwnerId(),
                 from.getCurrency().getCode());
         entity.setId(pk);
-        BigDecimal balance = from.getBalance()
-                .movePointRight(from.getCurrency().getMinor());
-        entity.setBalance(balance.intValue());
+        try {
+            BigDecimal balance = from.getBalance()
+                    .movePointRight(from.getCurrency().getMinor());
+            entity.setBalance(balance.intValue());
+        } catch (ArithmeticException ex) {
+            throw new ConversionException("Unable to convert balance value", ex);
+        }
         return entity;
     }
 
@@ -38,6 +42,8 @@ class AccountConverter implements Convertable<AccountDto, AccountEntity> {
         } catch (IllegalArgumentException ex) {
             throw new ConversionException("Unable to find currency for code "
                     + to.getId().getCurrency(), ex);
+        } catch (ArithmeticException ex) {
+            throw new ConversionException("Unable to convert balance", ex);
         }
     }
 }

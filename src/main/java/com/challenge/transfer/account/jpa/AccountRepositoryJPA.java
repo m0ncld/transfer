@@ -1,7 +1,8 @@
 package com.challenge.transfer.account.jpa;
 
+import com.challenge.transfer.account.AccountDto;
+import com.challenge.transfer.account.AccountId;
 import com.challenge.transfer.account.AccountRepository;
-import com.challenge.transfer.dto.AccountDto;
 import com.challenge.transfer.util.Convertable;
 import com.challenge.transfer.util.Currency;
 import org.springframework.data.repository.CrudRepository;
@@ -9,7 +10,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Repository
@@ -73,11 +73,10 @@ class AccountRepositoryJPA implements AccountRepository {
     }
 
     @Override
-    public Iterable<AccountDto> findAllById(
-            Iterable<Map.Entry<Integer, Currency>> ids) {
+    public Iterable<AccountDto> findAllById(Iterable<AccountId> ids) {
         List<AccountEntityPK> pks = new ArrayList<>();
         ids.forEach(id -> pks.add(
-                new AccountEntityPK(id.getKey(), id.getValue().getCode())
+                new AccountEntityPK(id.getOwnerId(), id.getCurrency().getCode())
         ));
         List<AccountDto> dtos = new ArrayList<>();
         crudRepository.findAllById(pks)

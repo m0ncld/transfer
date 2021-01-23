@@ -1,8 +1,9 @@
 package com.challenge.transfer.account;
 
-import com.challenge.transfer.dto.AccountDto;
 import com.challenge.transfer.util.Currency;
 import org.springframework.stereotype.Controller;
+
+import java.util.Optional;
 
 @Controller
 public class AccountController {
@@ -29,6 +30,25 @@ public class AccountController {
     }
 
     /**
+     * Return account for given owner ID and currency.
+     * @param ownerId Owner ID
+     * @param currency Currency
+     * @return Account for given owner ID and currency
+     */
+    public Optional<AccountDto> get(int ownerId, Currency currency) {
+        return repository.findById(ownerId, currency);
+    }
+
+    /**
+     * Return collection of account for given collection of account ID (owner ID and currency).
+     * @param ids Collection of account ID
+     * @return Collection of accounts
+     */
+    public Iterable<AccountDto> get(Iterable<AccountId> ids) {
+        return repository.findAllById(ids);
+    }
+
+    /**
      * Creates new account.
      * @param dto Account DTO
      * @return Created account DTO
@@ -36,7 +56,11 @@ public class AccountController {
      */
     public AccountDto create(AccountDto dto) throws IllegalArgumentException {
         if (repository.existsById(dto.getOwnerId(), dto.getCurrency())) {
-            throw new IllegalArgumentException("Account already existed");
+            String message = String.format(
+                    "Unable to create new account for owner: '%s' and currency: '%s'. Account already existed.",
+                    dto.getOwnerId(), dto.getCurrency()
+            );
+            throw new IllegalArgumentException(message);
         }
         return repository.save(dto);
     }
@@ -48,6 +72,15 @@ public class AccountController {
      */
     public AccountDto edit(AccountDto dto) {
         return repository.save(dto);
+    }
+
+    /**
+     * Edit multiple accounts at once.
+     * @param accountDtos Collection of accounts
+     * @return Collection of edited accounts
+     */
+    public Iterable<AccountDto> edit(Iterable<AccountDto> accountDtos) {
+        return repository.saveAll(accountDtos);
     }
 
     /**
