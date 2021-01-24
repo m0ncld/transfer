@@ -65,4 +65,12 @@ public class AccountId implements Serializable {
     public int hashCode() {
         return Objects.hash(ownerId, currency);
     }
+
+    @Override
+    public String toString() {
+        return "AccountId{"
+                + "ownerId=" + ownerId
+                + ", currency=" + currency
+                + '}';
+    }
 }
