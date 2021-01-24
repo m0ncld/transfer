@@ -5,12 +5,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
 
 class ExchangeRate {
+
+    /**
+     * Exchange rate calculation scale.
+     */
+    private static final int RATE_SCALE = 8;
 
     /**
      * Class logger.
@@ -69,7 +75,7 @@ class ExchangeRate {
             return Optional.empty();
         }
         try {
-            return Optional.of(rate2.get().divide(rate1.get()));
+            return Optional.of(rate2.get().divide(rate1.get(), RATE_SCALE, RoundingMode.FLOOR));
         } catch (ArithmeticException ex) {
             String msg = String.format(
                     "Error occured during calculating rates between currencies '%s' and '%s'",
