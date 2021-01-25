@@ -6,22 +6,22 @@ class ProcessingException  extends Exception {
     /**
      * Unknown exception occurred error code.
      */
-    private static final int UNDEFINED_EC = 0;
+    static final int UNDEFINED_EC = 0;
 
     /**
      * Either the debit or the credit account does not exist error code.
      */
-    private static final int ACCT_NOT_EXIST_EC = 1;
+    static final int ACCT_NOT_EXIST_EC = 1;
 
     /**
      * The exchange rate cannot be retrieved error code.
      */
-    private static final int RATE_NOT_EXIST_EC = 2;
+    static final int RATE_NOT_EXIST_EC = 2;
 
     /**
      * The balance of the debit account is not sufficient error code.
      */
-    private static final int BALANCE_NOT_SUFF_EC = 3;
+    static final int BALANCE_NOT_SUFF_EC = 3;
 
     /**
      * Exception error code.

@@ -16,14 +16,24 @@ import java.util.stream.StreamSupport;
 @Component
 @RequestScope
 @Order(ProcessorsOrder.GET_ACCOUNTS)
-class GetAccounts implements Processor {
+class GetAccountsProcessor implements Processor {
+
+    /**
+     * Processor name.
+     */
+    private static final String NAME = "Get Accounts";
+
+    @Override
+    public String getName() {
+        return NAME;
+    }
 
     /**
      * Account controller for CRUD operations.
      */
     private final transient AccountController accountController;
 
-    GetAccounts(AccountController accountController) {
+    GetAccountsProcessor(AccountController accountController) {
         this.accountController = accountController;
     }
 

@@ -1,8 +1,9 @@
 package com.challenge.transfer.funds.transfer;
 
 import java.io.Serializable;
+import java.util.Objects;
 
-class FundsTransferResponseErrorDto implements Serializable {
+public class FundsTransferResponseErrorDto implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
@@ -26,7 +27,7 @@ class FundsTransferResponseErrorDto implements Serializable {
      * @param errorCode Error code
      * @param message Error message
      */
-    FundsTransferResponseErrorDto(String transactionId, int errorCode, String message) {
+    public FundsTransferResponseErrorDto(String transactionId, int errorCode, String message) {
         this.transactionId = transactionId;
         this.errorCode = errorCode;
         this.message = message;
@@ -36,7 +37,7 @@ class FundsTransferResponseErrorDto implements Serializable {
      * Returns transaction id.
      * @return Transaction id
      */
-    String getTransactionId() {
+    public String getTransactionId() {
         return transactionId;
     }
 
@@ -44,7 +45,7 @@ class FundsTransferResponseErrorDto implements Serializable {
      * Returns error code.
      * @return Error code
      */
-    int getErrorCode() {
+    public int getErrorCode() {
         return errorCode;
     }
 
@@ -52,7 +53,27 @@ class FundsTransferResponseErrorDto implements Serializable {
      * Returns error message.
      * @return Error message
      */
-    String getMessage() {
+    public String getMessage() {
         return message;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof FundsTransferResponseErrorDto)) {
+            return false;
+        }
+        FundsTransferResponseErrorDto that = (FundsTransferResponseErrorDto) o;
+        return errorCode == that.errorCode
+                && Objects.equals(transactionId, that.transactionId)
+                && Objects.equals(message, that.message)
+                && getClass().equals(that.getClass());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(transactionId, errorCode, message);
     }
 }

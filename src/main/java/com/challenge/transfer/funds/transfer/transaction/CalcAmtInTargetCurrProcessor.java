@@ -12,6 +12,16 @@ import java.math.RoundingMode;
 @Order(ProcessorsOrder.CALC_AMT_IN_TARGET_CURRENCY)
 class CalcAmtInTargetCurrProcessor implements Processor {
 
+    /**
+     * Processor name.
+     */
+    private static final String NAME = "Calculate Amount In Target Currency";
+
+    @Override
+    public String getName() {
+        return NAME;
+    }
+
     @Override
     public void process(ProcessingContext context) throws ProcessingException {
         if (!context.getExchangeRate().isPresent()) {

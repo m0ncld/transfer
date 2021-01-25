@@ -15,12 +15,22 @@ import java.util.Optional;
 class ExchangeRateProcessor implements Processor {
 
     /**
+     * Processor name.
+     */
+    private static final String NAME = "Exchange Rate Processor";
+
+    /**
      * Exchange rate service.
      */
     private final transient ExchangeRateService service;
 
     ExchangeRateProcessor(ExchangeRateService service) {
         this.service = service;
+    }
+
+    @Override
+    public String getName() {
+        return NAME;
     }
 
     @Override

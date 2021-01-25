@@ -30,6 +30,12 @@ public class FundsTransferRequestDto implements Serializable {
     @DecimalMin("0")
     private final BigDecimal amount;
 
+    /**
+     * Construct a funds transfer request dto.
+     * @param source Source account ID
+     * @param target Target account ID
+     * @param amount Funds transfer amount
+     */
     FundsTransferRequestDto(AccountId source, AccountId target, BigDecimal amount) {
         this.source = source;
         this.target = target;

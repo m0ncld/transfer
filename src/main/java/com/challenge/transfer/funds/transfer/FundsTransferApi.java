@@ -35,6 +35,8 @@ class FundsTransferApi {
                     ex.getMessage()
             );
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+        } catch (RuntimeException ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 }

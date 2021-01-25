@@ -15,7 +15,7 @@ public class TransactionProcessingException extends ProcessingException {
      * @param message
      * @param details
      */
-    public TransactionProcessingException(String transactionId, int errorCode, String message, String details) {
+    TransactionProcessingException(String transactionId, int errorCode, String message, String details) {
         super(errorCode, message, details);
         this.transactionId = transactionId;
     }
@@ -28,7 +28,7 @@ public class TransactionProcessingException extends ProcessingException {
      * @param details Error details
      * @param cause Error cause
      */
-    public TransactionProcessingException(String transactionId, int errorCode, String message, String details,
+    TransactionProcessingException(String transactionId, int errorCode, String message, String details,
                                           Throwable cause) {
         super(errorCode, message, details, cause);
         this.transactionId = transactionId;

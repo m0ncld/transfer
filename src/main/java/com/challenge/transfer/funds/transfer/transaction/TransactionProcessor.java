@@ -4,6 +4,7 @@ import com.challenge.transfer.funds.transfer.FundsTransferRequestDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StopWatch;
 import org.springframework.web.context.annotation.RequestScope;
 
 import java.util.List;
@@ -29,6 +30,11 @@ public class TransactionProcessor {
      */
     private final transient List<Processor> processors;
 
+    /**
+     * Stop watch for measure processors execution time.
+     */
+    private final transient StopWatch stopWatch = new StopWatch(transactionID);
+
 
     TransactionProcessor(List<Processor> processors) {
         this.processors = processors;
@@ -50,7 +56,7 @@ public class TransactionProcessor {
         try {
             processProcessors(context, processed);
         } catch (ProcessingException ex) {
-            LOGGER.warn("Transaction " + transactionID + " processing error", ex);
+            LOGGER.warn("Transaction " + transactionID + " processing error", ex.getDetails());
             processOnFail(processed, context);
             throw TransactionProcessingException.of(transactionID, ex);
         } catch (RuntimeException ex) {
@@ -58,13 +64,20 @@ public class TransactionProcessor {
             processOnFail(processed, context);
             String message = "Unknown exception occurred during processing transaction";
             throw TransactionProcessingException.of(transactionID, message, ex);
+        } finally {
+            LOGGER.debug("Transaction: " + transactionID + " execution details:\n" + stopWatch.prettyPrint());
         }
     }
 
     @SuppressWarnings("PMD.DataflowAnomalyAnalysis") // PMD Bug on for loop
     private void processProcessors(ProcessingContext context,  Stack<Processor> processed)  throws ProcessingException {
         for (Processor processor : processors) {
-            processor.process(context);
+            try {
+                stopWatch.start("Processing [" + processor.getName() + "]");
+                processor.process(context);
+            } finally {
+                stopWatch.stop();
+            }
             processed.push(processor);
         }
     }
@@ -73,11 +86,14 @@ public class TransactionProcessor {
         while (!processed.empty()) {
             try {
                 Processor processor = processed.pop();
+                stopWatch.start("Processing Error [" + processor.getName() + "]");
                 processor.onProcessingError(context);
             } catch (RuntimeException exception) {
-                String message = String.format("Erroc occured on processing error for transaction: %s on processor: "
+                String message = String.format("Error occurred on processing error for transaction: %s on processor: "
                         + "%s", transactionID, processed.getClass());
                 LOGGER.warn(message, exception);
+            } finally {
+                stopWatch.stop();
             }
         }
     }

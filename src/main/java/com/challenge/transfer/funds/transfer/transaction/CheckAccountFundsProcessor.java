@@ -8,7 +8,17 @@ import org.springframework.web.context.annotation.RequestScope;
 @Component
 @RequestScope
 @Order(ProcessorsOrder.CHECK_ACCOUNT_FUNDS)
-class CheckAccountFunds implements Processor {
+class CheckAccountFundsProcessor implements Processor {
+
+    /**
+     * Processor name.
+     */
+    private static final String NAME = "Check Account Funds";
+
+    @Override
+    public String getName() {
+        return NAME;
+    }
 
     @Override
     public void process(ProcessingContext context) throws ProcessingException {
