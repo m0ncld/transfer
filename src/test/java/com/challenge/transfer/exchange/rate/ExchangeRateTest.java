@@ -22,8 +22,7 @@ public class ExchangeRateTest {
         source = new ExchangeRatesExternalDto();
         source.setDate(LocalDate.of(2021, 1, 22));
         source.setBase(Currency.EUR.getCode());
-        source.setRates(new HashMap<>(3));
-        source.getRates().put(Currency.EUR, BigDecimal.ONE);
+        source.setRates(new HashMap<>(2));
         source.getRates().put(Currency.USD, new BigDecimal("0.25"));
         source.getRates().put(Currency.PLN, new BigDecimal(5));
     }
@@ -69,7 +68,23 @@ public class ExchangeRateTest {
         instance = new ExchangeRate(source);
         Optional<BigDecimal> result = instance.getRateFor(Currency.USD);
         assertTrue(result.isPresent());
-        assertEquals(new BigDecimal("0.25").compareTo(result.get()), 0);
+        assertEquals(0, new BigDecimal("0.25").compareTo(result.get()));
+    }
+
+    @Test
+    void constructBaseRateUnknown() {
+        source.setBase("unknown");
+        instance = new ExchangeRate(source);
+        assertEquals(2, instance.getSize());
+    }
+
+    @Test
+    void getRateForBase() {
+        instance = new ExchangeRate(source);
+        Optional<BigDecimal> result = instance.getRateFor(Currency.EUR);
+        assertTrue(result.isPresent());
+        assertEquals(0, BigDecimal.ONE.compareTo(result.get()));
+        assertEquals(3, instance.getSize());
     }
 
     @Test
@@ -105,7 +120,7 @@ public class ExchangeRateTest {
         instance = new ExchangeRate(source);
         Optional<BigDecimal> result = instance.getRateBetween(Currency.PLN, Currency.PLN);
         assertTrue(result.isPresent());
-        assertEquals(BigDecimal.ONE.compareTo(result.get()), 0);
+        assertEquals(0, BigDecimal.ONE.compareTo(result.get()));
     }
 
     @Test
@@ -113,7 +128,7 @@ public class ExchangeRateTest {
         instance = new ExchangeRate(source);
         Optional<BigDecimal> result = instance.getRateBetween(Currency.USD, Currency.PLN);
         assertTrue(result.isPresent());
-        assertEquals(new BigDecimal(20).compareTo(result.get()), 0);
+        assertEquals(0, new BigDecimal(20).compareTo(result.get()));
     }
 
     @Test

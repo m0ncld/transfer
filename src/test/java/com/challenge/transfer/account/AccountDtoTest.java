@@ -1,24 +1,25 @@
 package com.challenge.transfer.account;
 
 import com.challenge.transfer.util.Currency;
+import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
-
 import java.math.BigDecimal;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 class AccountDtoTest {
 
     private static ValidatorFactory validatorFactory;
@@ -117,5 +118,10 @@ class AccountDtoTest {
         AccountDto dto1 = new AccountDto(1, Currency.EUR, BigDecimal.TEN);
         Object dto2 = new Object();
         assertNotEquals(dto1, dto2);
+    }
+
+    @Test
+    void textEquals() {
+        EqualsVerifier.forClass(AccountDto.class).usingGetClass().verify();
     }
 }

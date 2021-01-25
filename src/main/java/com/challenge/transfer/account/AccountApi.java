@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("account")
 class AccountApi {
@@ -33,12 +35,12 @@ class AccountApi {
     }
 
     @PostMapping
-    AccountDto create(@RequestBody AccountDto dto) {
+    AccountDto create(@Valid @RequestBody AccountDto dto) {
         return controller.create(dto);
     }
 
     @PutMapping
-    AccountDto edit(@RequestBody AccountDto dto) {
+    AccountDto edit(@Valid @RequestBody AccountDto dto) {
         return controller.edit(dto);
     }
 
