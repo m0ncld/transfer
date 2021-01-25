@@ -49,12 +49,11 @@ class AccountEntity implements Serializable {
             return false;
         }
         AccountEntity that = (AccountEntity) o;
-        return Objects.equals(id, that.id)
-                && Objects.equals(balance, that.balance);
+        return Objects.equals(id, that.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, balance);
+        return Objects.hash(id);
     }
 }
