@@ -14,8 +14,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertNotSame;
-import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class AccountControllerTest {
@@ -101,6 +100,7 @@ class AccountControllerTest {
         // Prepare controller method
         AccountDto returnedValue = new AccountDto(0, Currency.USD, BigDecimal.TEN);
         when(repository.save(parameter)).thenReturn(returnedValue);
+        when(repository.existsById(any(), any())).thenReturn(false);
 
         // Invoke testing method
         AccountDto result = instance.create(parameter);
@@ -115,24 +115,53 @@ class AccountControllerTest {
     }
 
     @Test
-    void edit() {
+    void createExisting() {
         // Prepare return value
         AccountDto parameter = new AccountDto(0, Currency.USD, BigDecimal.TEN);
 
         // Prepare controller method
         AccountDto returnedValue = new AccountDto(0, Currency.USD, BigDecimal.TEN);
         when(repository.save(parameter)).thenReturn(returnedValue);
+        when(repository.existsById(any(), any())).thenReturn(true);
 
         // Invoke testing method
-        AccountDto result = instance.edit(parameter);
+        assertThrows(IllegalArgumentException.class, () -> instance.create(parameter));
+    }
+
+    @Test
+    void edit() {
+        // Prepare return value
+        AccountDto parameter = new AccountDto(0, Currency.USD, BigDecimal.TEN);
+
+        // Prepare controller method
+        AccountDto returnedValue = new AccountDto(0, Currency.USD, BigDecimal.TEN);
+        when(repository.existsById(any(), any())).thenReturn(true);
+        when(repository.save(parameter)).thenReturn(returnedValue);
+
+        // Invoke testing method
+        AccountDto result = instance.createOrEdit(parameter);
 
         // Verify result
         assertSame(returnedValue, result);
         assertNotSame(parameter, result);
 
         ArgumentCaptor<AccountDto> argumentCaptor = ArgumentCaptor.forClass(AccountDto.class);
-        verify(repository, only()).save(argumentCaptor.capture());
+        verify(repository, times(1)).save(argumentCaptor.capture());
         assertSame(parameter, argumentCaptor.getValue());
+    }
+
+    @Test
+    void editNotExisting() {
+        // Prepare return value
+        AccountDto parameter = new AccountDto(0, Currency.USD, BigDecimal.TEN);
+
+        // Prepare controller method
+        AccountDto returnedValue = new AccountDto(0, Currency.USD, BigDecimal.TEN);
+        when(repository.existsById(any(), any())).thenReturn(false);
+        when(repository.save(parameter)).thenReturn(returnedValue);
+
+        // Invoke testing method
+        assertThrows(IllegalArgumentException.class, () -> instance.createOrEdit(parameter));
     }
 
     @Test
@@ -146,7 +175,7 @@ class AccountControllerTest {
         when(repository.saveAll(parameter)).thenReturn(returnedValue);
 
         // Invoke testing method
-        Iterable<AccountDto> result = instance.edit(parameter);
+        Iterable<AccountDto> result = instance.createOrEdit(parameter);
 
         // Verify result
         assertSame(returnedValue, result);

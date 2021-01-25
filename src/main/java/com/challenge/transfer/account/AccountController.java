@@ -69,17 +69,25 @@ public class AccountController {
      * Edit account.
      * @param dto Account DTO
      * @return edited DTO
+     * @throws IllegalArgumentException When the account not exist
      */
-    public AccountDto edit(AccountDto dto) {
+    public AccountDto createOrEdit(AccountDto dto) throws IllegalArgumentException {
+        if (!repository.existsById(dto.getOwnerId(), dto.getCurrency())) {
+            String message = String.format(
+                    "Unable to edit not existing account for owner: '%s' and currency: '%s'.",
+                    dto.getOwnerId(), dto.getCurrency()
+            );
+            throw new IllegalArgumentException(message);
+        }
         return repository.save(dto);
     }
 
     /**
-     * Edit multiple accounts at once.
+     * Create or edit multiple accounts at once.
      * @param accountDtos Collection of accounts
      * @return Collection of edited accounts
      */
-    public Iterable<AccountDto> edit(Iterable<AccountDto> accountDtos) {
+    public Iterable<AccountDto> createOrEdit(Iterable<AccountDto> accountDtos) {
         return repository.saveAll(accountDtos);
     }
 

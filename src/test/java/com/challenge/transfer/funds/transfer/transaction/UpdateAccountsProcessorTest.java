@@ -68,7 +68,7 @@ class UpdateAccountsProcessorTest {
         instance.process(context);
 
         // Verify method
-        verify(controller, times(1)).edit(accountsCaptor.capture());
+        verify(controller, times(1)).createOrEdit(accountsCaptor.capture());
         List<AccountDto> captured = StreamSupport
                 .stream(accountsCaptor.getValue().spliterator(), true)
                 .collect(Collectors.toList());
@@ -143,7 +143,7 @@ class UpdateAccountsProcessorTest {
         assertDoesNotThrow(() -> instance.process(context));
 
         // Verify method
-        verify(controller, never()).edit(ArgumentMatchers.<Iterable<AccountDto>>any());
+        verify(controller, never()).createOrEdit(ArgumentMatchers.<Iterable<AccountDto>>any());
     }
 
 }
