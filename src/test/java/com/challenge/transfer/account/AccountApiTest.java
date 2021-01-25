@@ -64,7 +64,7 @@ class AccountApiTest {
 
         // Prepare controller method
         AccountDto returnedValue = new AccountDto(0, Currency.USD, BigDecimal.TEN);
-        when(controller.edit(parameter)).thenReturn(returnedValue);
+        when(controller.createOrEdit(parameter)).thenReturn(returnedValue);
 
         // Invoke testing method
         AccountDto result = api.edit(parameter);
@@ -74,7 +74,7 @@ class AccountApiTest {
         assertNotSame(parameter, result);
 
         ArgumentCaptor<AccountDto> argumentCaptor = ArgumentCaptor.forClass(AccountDto.class);
-        verify(controller, times(1)).edit(argumentCaptor.capture());
+        verify(controller, times(1)).createOrEdit(argumentCaptor.capture());
         assertSame(parameter, argumentCaptor.getValue());
     }
 

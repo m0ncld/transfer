@@ -41,7 +41,7 @@ class AccountApi {
 
     @PutMapping
     AccountDto edit(@Valid @RequestBody AccountDto dto) {
-        return controller.edit(dto);
+        return controller.createOrEdit(dto);
     }
 
     @DeleteMapping("/by")

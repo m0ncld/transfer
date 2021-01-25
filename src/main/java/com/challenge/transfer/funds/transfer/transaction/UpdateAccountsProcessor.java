@@ -63,7 +63,7 @@ class UpdateAccountsProcessor implements Processor {
 
         AccountDto preparedSourceAccount = prepareAccount(sourceAccount, sourceAmount);
         AccountDto preparedTargetAccount = prepareAccount(targetAccount, targetAmount);
-        controller.edit(Arrays.asList(preparedSourceAccount, preparedTargetAccount));
+        controller.createOrEdit(Arrays.asList(preparedSourceAccount, preparedTargetAccount));
 
     }
 
