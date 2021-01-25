@@ -61,7 +61,8 @@ class ExchangeRatesExternalDto implements Serializable {
         ExchangeRatesExternalDto that = (ExchangeRatesExternalDto) o;
         return Objects.equals(base, that.base)
                 && Objects.equals(date, that.date)
-                && Objects.equals(rates, that.rates);
+                && Objects.equals(rates, that.rates)
+                && getClass().equals(that.getClass());
     }
 
     @Override

@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -26,7 +27,7 @@ class ExchangeRate {
     /**
      * Base currency of exchange rate table.
      */
-    private final Optional<String> base;
+    private final Optional<Currency> base;
 
     /**
      * Date of currency exchange rate table.
@@ -49,14 +50,33 @@ class ExchangeRate {
             this.rates = Collections.emptyMap();
             return;
         }
-        this.base = Optional.ofNullable(externalDto.getBase());
+        this.base = prepareBaseCurrency(externalDto.getBase());
         this.date = Optional.ofNullable(externalDto.getDate());
-        this.rates = externalDto.getRates() != null
-                ? Collections.unmodifiableMap(externalDto.getRates())
-                : Collections.emptyMap();
+        this.rates = prepareRates(externalDto.getRates(), base);
     }
 
-    Optional<String> getBase() {
+    private Map<Currency, BigDecimal> prepareRates(Map<Currency, BigDecimal> extTates, Optional<Currency> extBase) {
+        if (extTates == null) {
+            return Collections.emptyMap();
+        }
+        Map<Currency, BigDecimal> preparedRates = new HashMap<>(extTates);
+        extBase.ifPresent(currency -> preparedRates.put(currency, BigDecimal.ONE));
+        return Collections.unmodifiableMap(preparedRates);
+    }
+
+    private static Optional<Currency> prepareBaseCurrency(String baseCurrency) {
+        if (baseCurrency == null) {
+            return Optional.empty();
+        }
+        try {
+            return Optional.of(Currency.valueOf(baseCurrency));
+        } catch (IllegalArgumentException ex) {
+            LOGGER.warn("Unable to get currency in dictionary for base currency " + baseCurrency);
+        }
+        return Optional.empty();
+    }
+
+    Optional<Currency> getBase() {
         return base;
     }
 
@@ -66,6 +86,10 @@ class ExchangeRate {
 
     Optional<BigDecimal> getRateFor(Currency currency) {
         return Optional.ofNullable(rates.get(currency));
+    }
+
+    int getSize() {
+        return rates.size();
     }
 
     Optional<BigDecimal> getRateBetween(Currency currency1, Currency currency2) {
